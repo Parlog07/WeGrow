@@ -1,9 +1,17 @@
+
 package com.wegrow.entity;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "employes")
 public class Employe {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String matricule;
 
     private String nom;
@@ -12,31 +20,28 @@ public class Employe {
 
     private String poste;
 
+    @Enumerated(EnumType.STRING)
+    private Contrat contrat;
+
+    @ManyToOne
+    @JoinColumn(name = "departement_id", nullable = false)
     private Departement departement;
 
-    public Employe(Departement departement, Long id, String nom, String matricule, String prenom, String poste) {
-        this.departement = departement;
-        this.id = id;
-        this.nom = nom;
+    public Employe() {
+    }
+
+    public Employe(String matricule, String nom, String prenom,
+                   String poste, Contrat contrat, Departement departement) {
         this.matricule = matricule;
+        this.nom = nom;
         this.prenom = prenom;
         this.poste = poste;
+        this.contrat = contrat;
+        this.departement = departement;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Departement getDepartement() {
-        return departement;
-    }
-
-    public void setDepartement(Departement departement) {
-        this.departement = departement;
     }
 
     public String getMatricule() {
@@ -71,7 +76,19 @@ public class Employe {
         this.poste = poste;
     }
 
-    public Employe() {
+    public Contrat getContrat() {
+        return contrat;
     }
 
+    public void setContrat(Contrat contrat) {
+        this.contrat = contrat;
+    }
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
+    }
 }
